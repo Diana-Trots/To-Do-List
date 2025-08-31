@@ -23,7 +23,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 7px;
 }
 
 button {
@@ -206,10 +205,9 @@ input:not(:placeholder-shown) ~ .form__btn {
   justify-content: center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .container {
-    width: unset;
-    max-width: 550px;
+    width: 95svw;
   }
 
   h1 {
