@@ -60,7 +60,7 @@ ul {
   padding: 25px;
   width: 550px;
   border-radius: 10px;
-  margin: 12px;
+  margin: 7px;
 }
 .title {
   text-align: center;
@@ -207,6 +207,11 @@ input:not(:placeholder-shown) ~ .form__btn {
 }
 
 @media (max-width: 500px) {
+  .container {
+    width: unset;
+    max-width: 550px;
+  }
+
   h1 {
     font-size: 25px;
   }
