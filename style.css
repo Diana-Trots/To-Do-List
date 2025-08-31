@@ -186,6 +186,7 @@ input:focus + label,
 input:not(:placeholder-shown) + label {
   transform: translate(20px, -28px);
   background-color: #fff;
+  padding: 0 3px;
 }
 
 input:focus ~ .form__btn,
