@@ -207,7 +207,7 @@ input:not(:placeholder-shown) ~ .form__btn {
 
 @media (max-width: 550px) {
   .container {
-    width: 95svw;
+    width: 95vw;
   }
 
   h1 {
