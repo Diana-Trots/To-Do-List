@@ -19,10 +19,10 @@
             <p class="empty-list__title">Список дел пуст</p>
           </li>
 
-          <li class="task tasks-list__item">
+          <!-- <li class="task tasks-list__item">
             <span class="task__title">Сходить в магазин</span>
             <div class="tasks-list__btns">
-              <button type="button" data-action="Edit" class="tasks-list__btn">
+              <button type="button" data-action="edit" class="tasks-list__btn">
                 <img src="images/edit-pen.svg" alt="Done" />
               </button>
               <button
@@ -33,20 +33,27 @@
                 <img src="images/cross.png" alt="Delete" />
               </button>
             </div>
-          </li>
+          </li> -->
         </ul>
       </div>
 
       <!-- форма -->
       <div class="form-wrapper">
         <h2 class="subtitle">Добавить новую задачу</h2>
-        <form id="form" class="form">
+        <form id="form" data-action="add" class="form">
           <input type="text" id="taskInput" placeholder="" />
           <label for="taskInput">Введите задачу</label>
           <button type="submit" class="form__btn">+</button>
+          <button type="submit" class="form__btn hide">
+            <img src="images/change.png" alt="" />
+          </button>
         </form>
         <small id="emailHelp"></small>
       </div>
+      <button type="button" data-action="DeleteAll" class="btn deleteall-btn">
+        Удалить выполненные задачи
+      </button>
     </div>
+    <script src="main.js"></script>
   </body>
 </html>
