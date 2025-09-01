@@ -142,6 +142,10 @@ ul {
   background-color: rgb(255, 238, 127);
 }
 
+.tasks-list:has(.tasks-list__item--edit) {
+  pointer-events: none;
+}
+
 .tasks-list:has(.tasks-list__item--edit) .tasks-list__btn {
   display: none;
 }
