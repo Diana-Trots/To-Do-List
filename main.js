@@ -86,13 +86,13 @@ function deleteTask(event) {
 
 function toggleTask(event) {
   //проверяем, чтобы клик был по задаче
-  if (!event.target.classList.contains("tasks-list__item")) {
+  if (!event.target.classList.contains("task")) {
     return;
   }
 
   // отмечаем задачу завершенной или наоборот
   const listItem = event.target;
-  listItem.classList.toggle("tasks-list__item--done");
+  listItem.classList.toggle("task--done");
 }
 
 function editTask(event) {
@@ -107,7 +107,7 @@ function editTask(event) {
   let taskText = parentNode.querySelector("span").textContent;
 
   // добавляем класс тегу li
-  parentNode.classList.add("tasks-list__item--edit");
+  parentNode.classList.add("task--edit");
 
   // переключаем форму с добавления задачи на редактирование
   form.classList.add("form--edit");
@@ -124,14 +124,14 @@ function updateTask() {
   // достаем текст из поля ввода
   const taskText = taskInput.value;
   // находим задачу, которую нужно изменить
-  const task = document.querySelector(".tasks-list__item--edit");
+  const task = document.querySelector(".task--edit");
   const taskTextElement = task.querySelector("span");
 
   // меняем задачу
   taskTextElement.textContent = taskText;
 
-  // удаляем класс tasks-list__item--edit
-  task.classList.remove("tasks-list__item--edit");
+  // удаляем класс task--edit
+  task.classList.remove("task--edit");
 
   // переключаем форму с редактирования на добавление
   form.classList.remove("form--edit");

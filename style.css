@@ -5,12 +5,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Caveat";
+  src: url("fonts/Caveat-VariableFont_wght.ttf") format("TrueType");
+  font-weight: 400;
+  font-style: normal;
+}
+
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+
   font-family: "WDXL Lubrifont TC", sans-serif;
   font-weight: 400;
-  box-sizing: border-box;
 }
 
 .hide {
@@ -18,18 +26,21 @@
 }
 
 body {
-  background: #78c1f3;
-  min-height: 100svh;
   display: flex;
   align-items: start;
   justify-content: center;
+
+  min-height: 100svh;
   padding-top: 15px;
+  background: #78c1f3;
 }
 
 button {
-  border: none;
-  background-color: transparent;
   padding: 0;
+
+  background-color: transparent;
+  border: none;
+
   cursor: pointer;
   transition: transform 0.5s;
 }
@@ -57,52 +68,59 @@ ul {
 }
 
 .container {
-  background: #ffffff;
-  padding: 25px 25px 15px;
   width: 550px;
+  padding: 25px 25px 15px;
+  background: #ffffff;
   border-radius: 10px;
 }
+
 .title {
   text-align: center;
   margin-bottom: 15px;
 }
+
 .subtitle {
   margin-bottom: 25px;
 }
+
+/* ---------------------- Список задач ---------------------- */
+
 .tasks-wrapper {
   margin-bottom: 25px;
 }
+
 .tasks-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.empty-list {
-  flex-direction: column;
-  justify-content: center;
-  gap: 15px;
-  padding: 20px 0 !important;
+
+.tasks-list:has(.task--edit) {
+  pointer-events: none;
 }
 
 .tasks-list__item {
-  font-size: 18px;
-  padding: 10px;
-
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 5px;
+
   background-color: #edeef0;
 
   border-radius: 5px;
 }
-.empty-list__title {
+
+.empty-list {
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+
+  padding: 20px 0;
 }
 
 .empty-list::before {
   content: "";
   width: 70px;
   height: 70px;
+
   background-image: url("images/leaf.svg");
   background-size: contain;
   background-position: center;
@@ -110,16 +128,31 @@ ul {
 }
 
 .task {
-  cursor: pointer;
-  transition: background-color 0.5s, outline-color 0.5s;
+  justify-content: space-between;
+  gap: 5px;
+
+  padding: 10px;
+
   outline-style: solid;
   outline-width: 1px;
   outline-color: #fff;
+
+  cursor: pointer;
+  transition: background-color 0.5s, outline-color 0.5s;
+}
+
+.task--done {
+  text-decoration: line-through;
+  text-decoration-color: #000;
+  background-color: aquamarine;
+}
+
+.task--edit {
+  background-color: rgb(255, 238, 127);
 }
 
 .task:hover {
   background-color: #ffffff;
-
   outline-color: #000;
 }
 
@@ -128,78 +161,57 @@ ul {
   outline-color: #fff;
 }
 
+.task--done:hover {
+  background-color: rgba(207, 247, 234, 0.995);
+}
+
+.task--done:active {
+  background-color: rgba(148, 181, 170, 0.995);
+}
+
 .task__title {
+  font-family: "Caveat", "WDXL Lubrifont TC", sans-serif;
+  font-size: 20px;
+  color: #4a4a4a;
+
   pointer-events: none;
 }
 
-.tasks-list__item--done {
-  text-decoration: line-through;
-  text-decoration-color: #000;
-  background-color: aquamarine;
-}
-
-.tasks-list__item--edit {
-  background-color: rgb(255, 238, 127);
-}
-
-.tasks-list:has(.tasks-list__item--edit) {
-  pointer-events: none;
-}
-
-.tasks-list:has(.tasks-list__item--edit) .tasks-list__btn {
-  display: none;
-}
-
-.tasks-list__item--done .tasks-list__btns button:first-child {
-  display: none;
-}
-
-.tasks-list__btns {
-}
 .tasks-list__btns {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
+.tasks-list:has(.task--edit) .tasks-list__btn {
+  display: none;
+}
+
+.task--done .tasks-list__btns button:first-child {
+  display: none;
+}
+
 .tasks-list__btn img {
   width: 40px;
   height: 40px;
+
   pointer-events: none;
 }
 
-.form-wrapper {
-}
-
+/* ---------------------- Форма ---------------------- */
 .form {
   position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #edeef0;
-  border-radius: 30px;
+
   padding-left: 15px;
   margin-bottom: 25px;
-}
 
-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 15px 0;
-  font-size: 20px;
-  width: calc(100% - 70px);
-}
-
-label {
-  position: absolute;
-  font-size: 20px;
-  left: 15px;
-  bottom: 18px;
-  color: rgb(116, 116, 116);
-
-  transition: all 0.2s;
+  background: #edeef0;
+  border-radius: 30px;
 }
 
 .form:has(input:focus),
@@ -208,12 +220,52 @@ label {
   background-color: #fff;
 }
 
+input {
+  width: calc(100% - 70px);
+  padding: 15px 0;
+
+  font-size: 20px;
+
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+label {
+  position: absolute;
+  left: 15px;
+  bottom: 18px;
+
+  font-size: 20px;
+  color: rgb(116, 116, 116);
+
+  transition: all 0.2s;
+}
+
 input:focus + label,
 input:not(:placeholder-shown) + label {
   transform: translate(20px, -28px);
-  background-color: #fff;
+
   padding: 0 3px;
+
   color: #000;
+
+  background-color: #fff;
+}
+
+.form__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  height: 60px;
+
+  font-size: 40px;
+  color: white;
+
+  background-color: #4caf50;
+  border-radius: 50%;
 }
 
 input:focus ~ .form__btn,
@@ -221,47 +273,46 @@ input:not(:placeholder-shown) ~ .form__btn {
   margin: -2px -3px;
 }
 
-.form__btn {
-  background-color: #4caf50;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 40px;
+/* ------------------- Кнопки в самом низу ------------------- */
+.tasks-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
-.deleteall-btn {
-  display: block;
-  width: fit-content;
-  margin: 0 auto;
+.tasks-controls__btn {
   border-bottom: 1px dashed #000;
 }
+
+/* ---------------------- Медиа запросы ---------------------- */
 
 @media (max-width: 550px) {
   .container {
     width: 95vw;
   }
 
-  h1 {
+  .title {
     font-size: 25px;
   }
 
-  h2 {
+  .subtitle {
     font-size: 20px;
   }
 
-  .tasks-list__item {
+  .empty-list {
     font-size: 16px;
+  }
+
+  .task {
+    font-size: 18px;
+  }
+
+  .tasks-list__btn img {
+    width: 30px;
+    height: 30px;
   }
 
   input {
     font-size: 16px;
-  }
-  .tasks-list__btn img {
-    width: 30px;
-    height: 30px;
   }
 }
