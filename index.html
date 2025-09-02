@@ -12,7 +12,7 @@
       <h1 class="title">To-Do List</h1>
       <h2 class="subtitle">Список задач на сегодня</h2>
 
-      <!-- список дел -->
+      <!-- Список дел -->
       <div class="tasks-wrapper">
         <ul id="tasksList" class="tasks-list">
           <li id="emptyList" class="empty-list tasks-list__item">
@@ -23,7 +23,7 @@
             <span class="task__title">Сходить в магазин</span>
             <div class="tasks-list__btns">
               <button type="button" data-action="edit" class="tasks-list__btn">
-                <img src="images/edit-pen.svg" alt="Done" />
+                <img src="images/edit-pen.svg" alt="Edit" />
               </button>
               <button
                 type="button"
@@ -37,7 +37,7 @@
         </ul>
       </div>
 
-      <!-- форма -->
+      <!-- Форма -->
       <div class="form-wrapper">
         <h2 class="subtitle">Добавить новую задачу</h2>
         <form id="form" data-action="add" class="form">
@@ -45,14 +45,28 @@
           <label for="taskInput">Введите задачу</label>
           <button type="submit" class="form__btn">+</button>
           <button type="submit" class="form__btn hide">
-            <img src="images/change.png" alt="" />
+            <img src="images/change.png" alt="Update" />
           </button>
         </form>
-        <small id="emailHelp"></small>
       </div>
-      <button type="button" data-action="DeleteAll" class="btn deleteall-btn">
-        Удалить выполненные задачи
-      </button>
+
+      <!-- Кнопки внизу -->
+      <div class="tasks-controls">
+        <button
+          type="button"
+          data-action="delete-completed-tasks"
+          class="tasks-controls__btn"
+        >
+          Удалить выполненные задачи
+        </button>
+        <button
+          type="button"
+          data-action="delete-all-tasks"
+          class="tasks-controls__btn"
+        >
+          Удалить все задачи
+        </button>
+      </div>
     </div>
     <script src="main.js"></script>
   </body>
