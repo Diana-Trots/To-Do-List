@@ -273,17 +273,6 @@ input:not(:placeholder-shown) ~ .form__btn {
   margin: -2px -3px;
 }
 
-/* ------------------- Кнопки в самом низу ------------------- */
-.tasks-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.tasks-controls__btn {
-  border-bottom: 1px dashed #000;
-}
-
 /* ---------------------- Медиа запросы ---------------------- */
 
 @media (max-width: 550px) {

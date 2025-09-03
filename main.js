@@ -1,5 +1,4 @@
 // находим элементы на странице
-
 const form = document.querySelector(".form");
 const formLabel = form.querySelector("label");
 const taskInput = document.getElementById("taskInput");
@@ -7,14 +6,25 @@ const tasksList = document.getElementById("tasksList");
 const emptyList = document.getElementById("emptyList");
 const btns = document.querySelectorAll(".form__btn");
 
+//создаем пустой массив
+let tasks = [];
+
+// проверяем есть ли данные в LocalStorage
+if (localStorage.getItem("tasks")) {
+  // сохраняем данный из LocalStorage в массив
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+  // отображаем на странице данные из Local Storage
+  tasks.forEach((task) => renderTask(task));
+}
+
+// проверяем не пустой ли лист задач
+checkEmptyList();
+
 //добавление или редактирование задачи
 form.addEventListener("submit", (event) => {
   // отменяем отправку формы
   event.preventDefault();
-
-  if (form.dataset.action === "add") {
-    addTask();
-  } else updateTask();
+  form.dataset.action === "add" ? addTask() : updateTask();
 });
 
 //удаление задачи
@@ -26,7 +36,7 @@ tasksList.addEventListener("click", toggleTask);
 //Редактирование задачи
 tasksList.addEventListener("click", editTask);
 
-//Функции
+///////////////////////////Функции//////////////////////////////
 function addTask() {
   // достаем текст из поля ввода
   const taskText = taskInput.value;
@@ -36,34 +46,22 @@ function addTask() {
     return;
   }
 
-  // формулируем разметку для новой задачи
-  const taskHTML = `<li class="task tasks-list__item">
-            <span class="task__title">${taskText}</span>
-            <div class="tasks-list__btns">
-              <button type="button" data-action="edit" class="tasks-list__btn">
-                <img src="images/edit-pen.svg" alt="Done" />
-              </button>
-              <button
-                type="button"
-                data-action="delete"
-                class="tasks-list__btn"
-              >
-                <img src="images/cross.png" alt="Delete" />
-              </button>
-            </div>
-          </li>`;
+  // добовляем задачу в массив tasks
+  const newTask = { id: Date.now(), text: taskText, done: false };
+  tasks.push(newTask);
 
-  // добовляем задачу на страницу
-  tasksList.insertAdjacentHTML("beforeend", taskHTML);
+  //сохраняем задачу на странице
+  renderTask(newTask);
 
   //очищаем поле ввода и возвращаем на него фокус
   taskInput.value = "";
   taskInput.focus();
 
-  // скрываем emptyList
-  if (tasksList.children.length > 1) {
-    emptyList.classList.add("hide");
-  }
+  //проверяем не пустой ли лист задач
+  checkEmptyList();
+
+  //сохраняем в LocalStorage
+  saveToLocalStorage();
 }
 
 function deleteTask(event) {
@@ -75,13 +73,23 @@ function deleteTask(event) {
   // находим тег li который нужно удалить
   const parentNode = event.target.closest("li");
 
-  //удаляем
+  //находим id задачи
+  const id = +parentNode.id;
+
+  //находим индекс задачи в массиве
+  const index = tasks.findIndex((task) => task.id === id);
+
+  //удаляем задачу из массива
+  tasks.splice(index, 1);
+
+  //удаляем тег li
   parentNode.remove();
 
-  // проверяем пуст ли список задач
-  if (tasksList.children.length === 1) {
-    emptyList.classList.remove("hide");
-  }
+  //проверяем не пустой ли лист задач
+  checkEmptyList();
+
+  //сохраняем в LocalStorage
+  saveToLocalStorage();
 }
 
 function toggleTask(event) {
@@ -90,9 +98,23 @@ function toggleTask(event) {
     return;
   }
 
-  // отмечаем задачу завершенной или наоборот
+  // находим li задачи и её id
   const listItem = event.target;
+  const id = +listItem.id;
+
+  // находим задачу в массиве tasks
+  const task = tasks.find((task) => task.id === id);
+
+  // меняем значение done
+  task.done = !task.done;
+
+  console.log(task);
+
+  // отмечаем задачу завершенной или наоборот
   listItem.classList.toggle("task--done");
+
+  //сохраняем в LocalStorage
+  saveToLocalStorage();
 }
 
 function editTask(event) {
@@ -122,16 +144,24 @@ function editTask(event) {
 
 function updateTask() {
   // достаем текст из поля ввода
-  const taskText = taskInput.value;
-  // находим задачу, которую нужно изменить
-  const task = document.querySelector(".task--edit");
-  const taskTextElement = task.querySelector("span");
+  const newTaskText = taskInput.value;
 
-  // меняем задачу
-  taskTextElement.textContent = taskText;
+  // находим задачу, которую нужно изменить
+  const parentNode = document.querySelector(".task--edit");
+  const taskTextElement = parentNode.querySelector("span");
+
+  // если новый текст не пустая строка
+  if (newTaskText) {
+    // меняем задачу
+    taskTextElement.textContent = newTaskText;
+    //сохраняем в массив tasks
+    const id = +parentNode.id;
+    const task = tasks.find((task) => task.id === id);
+    task.text = newTaskText;
+  }
 
   // удаляем класс task--edit
-  task.classList.remove("task--edit");
+  parentNode.classList.remove("task--edit");
 
   // переключаем форму с редактирования на добавление
   form.classList.remove("form--edit");
@@ -142,5 +172,49 @@ function updateTask() {
   taskInput.value = "";
   formLabel.textContent = "Введите задачу";
 
-  console.log(task);
+  //сохраняем в LocalStorage
+  saveToLocalStorage();
+}
+
+function checkEmptyList() {
+  console.log(tasks.length, !!tasks.length);
+  if (!tasks.length) {
+    const emptyListHTML = `<li id="emptyList" class="empty-list tasks-list__item">
+            <p class="empty-list__title">Список дел пуст</p>
+          </li>`;
+
+    tasksList.insertAdjacentHTML("afterbegin", emptyListHTML);
+  } else {
+    const emptyListEL = document.getElementById("emptyList");
+    emptyListEL ? emptyListEL.remove() : null;
+  }
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function renderTask(task) {
+  const cssClass = task.done
+    ? "tasks-list__item task--done"
+    : "tasks-list__item";
+
+  const taskHTML = `<li id="${task.id}" class="task ${cssClass}">
+            <span class="task__title">${task.text}</span>
+            <div class="tasks-list__btns">
+              <button type="button" data-action="edit" class="tasks-list__btn">
+                <img src="images/edit-pen.svg" alt="Done" />
+              </button>
+              <button
+                type="button"
+                data-action="delete"
+                class="tasks-list__btn"
+              >
+                <img src="images/cross.png" alt="Delete" />
+              </button>
+            </div>
+          </li>`;
+
+  // добовляем задачу на страницу
+  tasksList.insertAdjacentHTML("beforeend", taskHTML);
 }
